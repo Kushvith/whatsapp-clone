@@ -32,7 +32,7 @@ public class ChatController {
     private final ChatService chatService;
     private final UserService userService;
     @PostMapping("/single")
-    private ResponseEntity<Chat> createChatHandler(@RequestBody SingleReques singleReques,@RequestHeader("Authorization")String jwt) throws UserExpection{
+    private ResponseEntity<Chat> createChatHandler(@RequestBody SingleReques singleReques,@RequestHeader("Authorization") String jwt) throws UserExpection{
         User  user = userService.findUserProfile(jwt);
         Chat chat = chatService.createChat(user, singleReques.getId());
         return new ResponseEntity<>(chat,HttpStatus.OK);

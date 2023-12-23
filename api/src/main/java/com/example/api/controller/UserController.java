@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.api.dto.ApiResponse;
 import com.example.api.dto.UpdateUserReq;
@@ -21,7 +23,7 @@ import com.example.api.service.UserService;
 
 import lombok.AllArgsConstructor;
 
-@Controller
+@RestController
 @RequestMapping("/api/users")
 @AllArgsConstructor
 public class UserController {
@@ -31,8 +33,8 @@ public class UserController {
         User user = userService.findUserProfile(jwt);
         return new ResponseEntity<User>(user,HttpStatus.ACCEPTED);
     }
-    @GetMapping("/{query}")
-    public ResponseEntity<List<User>> searchUserHandler(@PathVariable String query){
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchUserHandler(@RequestParam("query") String query){
         List<User> users = userService.searchUser(query);
         return new ResponseEntity<>(users,HttpStatus.ACCEPTED);
     }

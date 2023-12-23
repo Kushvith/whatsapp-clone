@@ -9,10 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.example.api.config.JwtProvider;
 import com.example.api.dto.AuthResponse;
@@ -24,7 +24,7 @@ import com.example.api.service.UserDetailImpl;
 
 import lombok.AllArgsConstructor;
 
-@Controller
+@RestController
 @RequestMapping("/auth")
 @AllArgsConstructor
 public class AuthController {
@@ -51,6 +51,7 @@ public class AuthController {
         AuthResponse authResponse = new AuthResponse(jwt,true);
         return new ResponseEntity<AuthResponse>(authResponse,HttpStatus.ACCEPTED);
     }
+    @PostMapping("/loginin")
     public ResponseEntity<AuthResponse> LoginHandler(@RequestBody LoginDto loginDto) throws UserExpection{
         Authentication auth = authenticate(loginDto.getEmail(), loginDto.getPassword());
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -58,7 +59,7 @@ public class AuthController {
         AuthResponse authResponse = new AuthResponse(jwt, true);
         return new ResponseEntity<AuthResponse>(authResponse,HttpStatus.ACCEPTED);
     }
-    public Authentication authenticate(String username,String password) throws UserExpection
+    private Authentication authenticate(String username,String password) throws UserExpection
     {
         UserDetails userdetail = userDetailImpl.loadUserByUsername(username);
         if(userdetail == null){

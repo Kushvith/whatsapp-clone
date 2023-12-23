@@ -3,12 +3,13 @@ package com.example.api.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,10 +33,10 @@ public class MessageController {
     private final MessageService messageService;
     private final UserService userService;
     @PostMapping("/create")
-    public ResponseEntity<Message> createMessage(SendMessageRequest sentMessageRequest,@RequestHeader("Authorization")String jwt) throws UserExpection, chatExpection{
+    public ResponseEntity<Message> createMessage(@RequestBody SendMessageRequest sentMessageRequest,@RequestHeader("Authorization")String jwt) throws UserExpection, chatExpection{
         User user = userService.findUserProfile(jwt);
-        sentMessageRequest.setUserId(user.getId());
-        return new ResponseEntity<>(messageService.sendMessage(sentMessageRequest),HttpStatus.ACCEPTED);
+        // sentMessageRequest.setUserId(user.getId());
+        return new ResponseEntity<>(messageService.sendMessage(sentMessageRequest,user.getId()),HttpStatus.ACCEPTED);
     }
     @GetMapping("/chat/{chatId}")
     public ResponseEntity<List<Message>> getChatsMessageHandler(@PathVariable Long chatId,@RequestHeader("Authorization")String jwt) throws UserExpection, chatExpection{

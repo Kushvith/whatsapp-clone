@@ -13,7 +13,7 @@ import com.example.api.model.User;
 
 @Service
 public interface MessageService {
-    public Message sendMessage(SendMessageRequest req) throws UserExpection,chatExpection;
+    public Message sendMessage(SendMessageRequest req,Long userId) throws UserExpection,chatExpection;
     public List<Message> getChatMessages(Long chatId,User reqUser) throws chatExpection, UserExpection;
     public Message findMessageById(Long messageId) throws MessageException;
     public void deleteMessage(Long messageId,User reqUser) throws MessageException;

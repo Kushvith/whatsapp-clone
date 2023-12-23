@@ -1,0 +1,3 @@
+export const CREATE_CHAT = "CREATE_CHAT"
+export const GET_USER_CHATS = "GET_USER_CHATS"
+export const CREATE_GROUP = "CREATE_GROUP"

@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +33,7 @@ public class ApiConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest arg0) {
                 CorsConfiguration cfg = new CorsConfiguration();
             cfg.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000"
+                "http://localhost:3000/"
             ));
             cfg.setAllowedMethods(
                 Collections.singletonList("*")
@@ -44,7 +45,7 @@ public class ApiConfig {
             return cfg;
             }
             
-        })).cors(csrf -> csrf.disable());
+        })).csrf(csrf -> csrf.disable()).httpBasic(Customizer.withDefaults()).formLogin(Customizer.withDefaults());
         return http.build();
     }
     @Bean

@@ -32,7 +32,8 @@ public class ChatServiceImpl implements ChatService {
        chat.setCreatedBy(reqUser);
        chat.setGroup(false);
        chat.getUsers().add(user);
-       return chat;
+       chat.getUsers().add(reqUser);
+       return chatRepository.save(chat);
     }
 
     @Override
@@ -58,11 +59,12 @@ public class ChatServiceImpl implements ChatService {
         group.setChat_image(req.getChat_image());
         group.setChat_name(req.getChat_name());
         group.setCreatedBy(user);
+        group.getAdmins().add(user);
         for(Long userId:req.getUserId()){
             User groupUser = userService.findByUserId(userId);
             group.getUsers().add(groupUser);
         }
-        return group;
+        return chatRepository.save(group);
     }
 
     @Override

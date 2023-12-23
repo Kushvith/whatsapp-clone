@@ -27,8 +27,9 @@ public class MessageServiceImpl implements MessageService {
     private final ChatService chatService;
     private final MessageRepository messageRepository;
     @Override
-    public Message sendMessage(SendMessageRequest req) throws UserExpection, chatExpection {
-       User user = userService.findByUserId(req.getUserId());
+    public Message sendMessage(SendMessageRequest req,Long userId) throws UserExpection, chatExpection {
+       User user = userService.findByUserId(userId);
+    //    System.out.println(Long.valueOf(req.getSenderId()));
        Chat chat = chatService.findChatById(req.getChatId());
        Message message = new Message();
        message.setChat(chat);
