@@ -8,4 +8,7 @@
 ## springboot
  springboot is used provide the backend features to store users message and group messages. where each message consists of chats id for storing messages
 
+<p align="center">
+  <img src="https://github.com/Kushvith/Glocery_app/blob/master/images/image1.jpeg" width="350" >
+</p>
  
