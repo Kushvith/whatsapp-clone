@@ -7,8 +7,12 @@
 
 ## springboot
  springboot is used provide the backend features to store users message and group messages. where each message consists of chats id for storing messages
-
-<p align="center">
-  <img src="https://github.com/Kushvith/Glocery_app/blob/master/images/image1.jpeg" width="350" >
+## Some Screenshots  
+<p >
+  <img src="https://github.com/Kushvith/whatsapp-clone/blob/main/img/1.png" >
+  <img src="https://github.com/Kushvith/whatsapp-clone/blob/main/img/2.png" >
+  <img src="https://github.com/Kushvith/whatsapp-clone/blob/main/img/3.png" >
+  <img src="https://github.com/Kushvith/whatsapp-clone/blob/main/img/4.png" >
+  <img src="https://github.com/Kushvith/whatsapp-clone/blob/main/img/5.png" >
 </p>
  
