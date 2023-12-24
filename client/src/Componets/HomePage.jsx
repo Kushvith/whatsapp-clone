@@ -18,7 +18,8 @@ import { currentUser, logout, searchUser } from "../Redux/Auth/Action";
 import { store } from "../Redux/store";
 import { GetAllChat, createSingleChat } from "../Redux/Chat/Action";
 import { createMessage, getAllMessages } from "../Redux/Message/Action";
-import {overWS} from "stompjs"
+import {over} from "stompjs"
+import SockJS from "sockjs-client/dist/sockjs"
 
 const HomePage = () => {
     const [query, setQuery] = useState("");
@@ -42,6 +43,7 @@ const HomePage = () => {
         }
        
     },[currentChat,message.newmessages])
+
     useEffect(() => {
         dispatch(GetAllChat(token))
     }, [chat.createChat, chat.createGroup])
@@ -78,6 +80,59 @@ const HomePage = () => {
     const handleCurrentChat = (item) => {
         setCurrentChat(item)
     }
+    const [stompClient,setStompClient] = useState()
+    const [isConnect,setisConnect] = useState(false)
+    const [messages,setMessages] = useState([])
+    const connect = () => {
+        const sock = new SockJS("http://localhost:8080/ws")
+        const temp = over(sock)
+        setStompClient(temp)
+        const headers = {
+            Authorization:`Bearer ${token}`,
+            "X-XSRF-TOKEN":getCookie("XSRF-TOKEN")
+        }
+        temp.connect(headers,onConnect,onError)
+    }
+    function getCookie(name){
+        const value = `; ${document.cookie}`
+        const parts = value.split(`; ${name}=`)
+        if(parts.length ==2){
+            return parts.pop().split(";").shift()
+        }
+    }
+    const onError = (error) =>{
+        console.log("no error",error)
+    }
+const onConnect = ()=>{
+    setisConnect(true)
+}
+const onMessageRecieve = (payload) =>{
+    console.log("recieve message ",JSON.parse(payload.body))
+    const recievedMessage = JSON.parse(payload.body)
+    setMessages([...messages,recievedMessage])
+}
+useEffect(()=>{
+    setMessages(message.messages)
+},message.messages)
+useEffect(()=>{
+    if(message.newmessages&&stompClient){
+        setMessages([...messages,message.newmessages])
+        stompClient?.send("/app/message",{},JSON.stringify(message.newmessages))
+    }
+},[message.newmessages])
+useEffect(()=>{
+    connect()
+},[])
+
+useEffect(()=>{
+    if(isConnect && stompClient && auth.requser && currentChat){
+        const subscription = stompClient.subscribe("/group/"+currentChat.id,onMessageRecieve)
+        return ()=>{
+            subscription.unsubscribe()
+        }
+    }
+})
+
     return (
         <div className="relative">
             <div className="py-14 bg-[#00a884] w-full"></div>
@@ -184,7 +239,7 @@ const HomePage = () => {
                             </div>
                             <div className="px-10 h-[85vh] overflow-y-scroll ">
                                 <div className="flex flex-col space-y-1 justify-center mt-2 py-2">
-                                    {message.messages?.map((item, i) => <MessageCard isReqUserMessage={auth.requser.id == item.user?.id ? false:true} content={item.content} />)}
+                                    {messages?.map((item, i) => <MessageCard isReqUserMessage={auth.requser.id == item.user?.id ? false:true} content={item.content} />)}
                                 </div>
                             </div>
                             <div className="footer bg-[#f0f3f5] absolute bottom-0 w-[75%] py-3">
