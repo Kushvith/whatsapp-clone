@@ -33,7 +33,8 @@ public class ApiConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest arg0) {
                 CorsConfiguration cfg = new CorsConfiguration();
             cfg.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000/"
+                "http://localhost:3000/",
+                "https://whatsapp-new-xi.vercel.app"
             ));
             cfg.setAllowedMethods(
                 Collections.singletonList("*")

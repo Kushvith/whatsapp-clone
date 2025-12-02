@@ -1,6 +1,7 @@
 package com.example.api.config;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.crypto.SecretKey;
 
@@ -13,8 +14,10 @@ import io.jsonwebtoken.security.Keys;
 public class JwtProvider {
     SecretKey key = Keys.hmacShaKeyFor(jwtConstant.SECRET_KEY.getBytes());
     public String generateToken(String email){
+        Date now = new Date();
+        Date expirationDate = new Date(now.getTime() + TimeUnit.DAYS.toMillis(10)); // 10 days in milliseconds
         return Jwts.builder().issuedAt(new Date())
-        .expiration(new Date(new Date().getTime() * 846000000))
+        .expiration(expirationDate)
         .subject(email)
         .signWith(key)
         .compact();

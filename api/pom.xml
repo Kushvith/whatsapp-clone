@@ -15,12 +15,9 @@
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
+		 <start-class>com.example.api.ApiApplication</start-class>
 	</properties>
 	<dependencies>
-
-		
-
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -38,10 +35,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
+	 	<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
